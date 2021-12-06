@@ -1,7 +1,7 @@
 # Criando um CRUD no SALESFORCE
 
 ​                															                                                                               
-<img align="right" img src="./salesforce.png">
+<img align="right" img src="https://github.com/JoanesAraujo/Joanes_Screenshot/blob/master/salesforce_logo/salesforce.png">
 
  
 <br>
