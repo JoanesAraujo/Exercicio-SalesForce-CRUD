@@ -1,0 +1,37 @@
+.THIS .inputFieldWidth {
+    width:85%;
+}
+
+.THIS .tabelaEditavel {
+    border:solid 2px;
+    width:100%
+}
+ 
+.THIS .tabelaEditavel td {
+    border:solid 2px;
+}
+ 
+.THIS .tabelaEditavel .celulaEmEdicao {
+    padding: 0;
+    font-family:Consolas
+}
+ 
+.THIS .tabelaEditavel .celulaEmEdicao input[type=text]{
+    width:100%;
+    border:0;
+    background-color:rgb(255,253,210);  
+    font-family:Consolas
+}
+
+.THIS .oi{
+    margin: 5px;
+    width:50%
+}
+
+.THIS .modal {
+    margin: 75px auto;
+    width: 50% !important;
+    max-width: 43rem !important;
+    min-width: 45rem !important;
+    
+}

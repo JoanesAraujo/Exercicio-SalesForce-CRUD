@@ -1,0 +1,72 @@
+<aura:component controller="Formcad" implements="flexipage:availableForAllPageTypes">
+    <aura:attribute name="Account" type="Account"/> 
+    <aura:attribute name="accounts" type="List" />  
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <!-- PAGE HEADER -->
+    <lightning:layout class="slds-page-header slds-page-header--object-home">
+        <lightning:layoutItem>
+            <lightning:icon iconName="standard:user" alternativeText="Meu Cadastro"/>
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="horizontal-small">
+            <div class="page-section page-header">
+                <h1 class="slds-text-heading--label">Cadastro</h1>
+                <h2 class="slds-text-heading--medium">Cliente</h2>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout>
+    <lightning:layout>
+        <lightning:layoutItem padding="around-small" size="6">
+            <div aria-labelledby="newaccountform">
+                <!-- BOXED AREA -->
+                <fieldset class="slds-box slds-theme--default slds-container--small">
+                    <legend id="newaccountform" class="slds-text-heading--small 
+                                                       slds-p-vertical--medium">
+                        Cliente
+                    </legend>
+                    
+                    <!-- CREATE NEW EXPENSE FORM -->
+                    <form class="slds-form--stacked">            
+                        <div class="slds-form-element">
+                            
+                            
+                            <div class="slds-col">
+                                <lightning:input aura:id="clienteform" type="text" name="FirstName" label="Nome: " required="true" value="{!v.Account.Name}"/>
+                            </div>
+                            <br></br>
+                            
+                            <div class="slds-col">
+                                <lightning:input aura:id="clienteform" type="phone" name="phone" label="Número(Tel):"
+                                                 pattern="^(1?(-?\d{3})-?)?(\d{3})(-?\d{4})$"
+                                                 messageWhenPatternMismatch="The phone number must contain 7, 10, or 11 digits. Hyphens are optional."
+                                                 value="{!v.Account.phone}" required="true"/>
+                            </div>
+                            <br></br>
+                            
+                            <div class="slds-col">
+                                <lightning:input aura:id="clienteform" type="string" name="number" label="Account Number: " required="true" value="{! v.Account.accountNumber }" />
+                            </div>
+                            
+                            <br></br>
+                            <lightning:button label="Submit" 
+                                              class="slds-m-top--medium"
+                                              variant="brand"
+                                              onclick="{!c.save2}"/>
+                        </div>
+                        
+                    </form>
+                    
+                    
+                    <br></br>
+                    
+                </fieldset>             
+                
+            </div>
+        </lightning:layoutItem>
+        
+        
+        
+    </lightning:layout>
+</aura:component>

@@ -1,0 +1,270 @@
+<aura:component controller="inlineEditCtrl">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>    
+    <!--declaração aura attributes-->    
+    <aura:attribute name="showSaveCancelBtn" type="boolean"/>
+    <aura:attribute name="showErrorClass" type="boolean" default="false"/>
+    <aura:attribute name="sNo" type="string" />
+    <aura:attribute name="singleRec" type="sobject" default="{'sobjectType' : 'account',
+                                                               'Name' : '',
+                                                               'phone' : '',
+                                                               'AccountNumber' :''
+                                                               }"/>
+    <aura:attribute name="nameEditMode" type="boolean" default="false" />
+    <aura:attribute name="PhoneEditMode" type="boolean" default="false" />
+    <aura:attribute name="AccEditMode" type="boolean" default="false" />
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <!-- ATRIBUTOS DO MODAL PARA FORMULÁRIO DO CONTATO -->
+    <aura:attribute name="targetR" type="String" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="con" type="Contact" default="{'sobjectType' : 'contact',
+                                                       'FirstName':'',
+                                                       'LastName':'',
+                                                       'Phone':'',
+                                                       'Email':''
+                                                       }" />
+    <aura:attribute name="contactList" type="List"/>
+    
+    
+    
+    
+    <!--Table Row Start-->  
+    <tr>
+        <td><div class="slds-truncate">{!v.sNo}</div></td>
+        
+       	<!-- NOME -->
+        
+        <td ondblclick="{!c.inlineEditName}" class="{! v.showErrorClass == true ? 'slds-cell-edit slds-has-error' : 'slds-cell-edit'}">
+            <span class="slds-grid slds-grid_align-spread">
+                <!-- show input and output section based on boolean flag --> 
+                <aura:if isTrue="{!v.nameEditMode == false}">
+                    <span class="slds-truncate" title="Name" onclick="{!c.openModel}"><a>{!v.singleRec.Name}</a></span>
+                    <button onclick="{!c.inlineEditName}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Name">
+                      <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                    </button>
+                   
+                        <!-- Inline Edit Section in else case-->  
+                    <aura:set attribute="else">
+                        <section  tabindex="0" class="slds-popover slds-popover_edit" role="dialog" style="position: absolute; top: 0px">
+                            <div class="slds-popover__body">
+                                <div class="slds-form-element slds-grid slds-wrap">
+                                    <div class="slds-form-element__control slds-grow">
+                                        <ui:inputText class="slds-input inputFieldWidth"
+                                                      labelClass="slds-form-element__label slds-form-element__label_edit slds-no-flex"
+                                                      aura:id="inputId"
+                                                      blur="{!c.closeNameBox}"
+                                                      change="{!c.onNameChange}"
+                                                      required="true"
+                                                      label="Nome"
+                                                      value="{!v.singleRec.Name}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <span id="form-end" tabindex="0"></span>
+                        </section>  
+                    </aura:set>  
+                </aura:if> 
+            </span>
+        </td>
+        
+        <!-- TELEFONE -->
+        
+        <td ondblclick="{!c.inlineEditPhone}" class="{! v.showErrorClass == true ? 'slds-cell-edit slds-has-error' : 'slds-cell-edit'}">
+            <span class="slds-grid slds-grid_align-spread">
+                <!-- show input and output section based on boolean flag --> 
+                <aura:if isTrue="{!v.PhoneEditMode == false}">
+                    <span class="slds-truncate" title="Name">{!v.singleRec.Phone}</span>
+                    <button onclick="{!c.inlineEditPhone}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Phone">
+                      <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                    </button>
+                   
+                    <!-- Inline Edit Section in else case-->  
+                    <aura:set attribute="else">
+                        <section  tabindex="0" class="slds-popover slds-popover_edit" role="dialog" style="position: absolute; top: 0px">
+                            <div class="slds-popover__body">
+                                <div class="slds-form-element slds-grid slds-wrap">
+                                    <div class="slds-form-element__control slds-grow">
+                                        <ui:inputText class="slds-input inputFieldWidth"
+                                                      labelClass="slds-form-element__label slds-form-element__label_edit slds-no-flex"
+                                                      aura:id="inputId"
+                                                      blur="{!c.closePhoneBox}"
+                                                      change="{!c.onPhoneChange}"
+                                                      required="true"
+                                                      label="Fone"
+                                                      value="{!v.singleRec.Phone}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <span id="form-end" tabindex="0"></span>
+                        </section>  
+                    </aura:set>  
+                </aura:if> 
+            </span>
+        </td>
+        
+        <!-- ACC NUMBER -->
+        
+          <td ondblclick="{!c.inlineEditAcc}" class="{! v.showErrorClass == true ? 'slds-cell-edit slds-has-error' : 'slds-cell-edit'}">
+            <span class="slds-grid slds-grid_align-spread">
+                <!-- show input and output section based on boolean flag --> 
+                <aura:if isTrue="{!v.AccEditMode == false}">
+                    <span class="slds-truncate" title="AccNumber">{!v.singleRec.AccountNumber}</span>
+                    <button onclick="{!c.inlineEditAcc}" class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="0" title="Edit Acc">
+                      <lightning:icon iconName="utility:edit" size="xx-small" alternativeText="edit"/>
+                    </button>
+                   
+                    <!-- Inline Edit Section in else case-->  
+                    <aura:set attribute="else">
+                        <section  tabindex="0" class="slds-popover slds-popover_edit" role="dialog" style="position: absolute; top: 0px">
+                            <div class="slds-popover__body">
+                                <div class="slds-form-element slds-grid slds-wrap">
+                                    <div class="slds-form-element__control slds-grow">
+                                        <ui:inputText class="slds-input inputFieldWidth"
+                                                      labelClass="slds-form-element__label slds-form-element__label_edit slds-no-flex"
+                                                      aura:id="inputId"
+                                                      blur="{!c.closeAccBox}"
+                                                      change="{!c.onAccChange}"
+                                                      required="true"
+                                                      label="AccountNumber"
+                                                      value="{!v.singleRec.AccountNumber}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <span id="form-end" tabindex="0"></span>
+                        </section>  
+                    </aura:set>  
+                </aura:if> 
+            </span>
+        </td>
+        <!--DELETAR-->        
+        <div class="slds-grid slds-grid--align-right" > 
+            <button class="slds-button slds-button_destructive" onclick="{!c.deleteSelected}" value="{!v.singleRec.Name}">Deletar</button>			            
+        </div>
+        
+    </tr>
+    
+    <!-- MODAL--> 
+    
+    <aura:if isTrue="{!v.isOpen}">
+        
+        <!--###### MODAL BOX Start######--> 
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Dados da Conta</h2>
+                </header>
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p><b>
+                         
+                        <table class="tabelaEditavel">
+                            <thead>
+                                <tr>
+                                    <th>(ID)</th>
+                                    <th>Nome</th>
+                                    <th>Telefone</th>
+                                    <th>Acc Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{!v.singleRec.Id}</td>
+                                    <td>{!v.singleRec.Name}</td>
+                                    <td>{!v.singleRec.Phone}</td>
+                                    <td>{!v.singleRec.AccountNumber}</td>                                    
+                                </tr>                                
+                            </tbody>
+                        </table>
+                        <!--FORMULÁRIO CONTATO-->
+                        <table class="tabelaEditavel">
+                            <force:recordData aura:id="ContactDetail" layoutType="FULL" targetRecord="{!v.newrecord}" targetFields="{!v.con}" targetError="{!v.recordError}" />
+                            <div class="slds-text-align--left">
+                                <h3 class="slds-section-title--divider" align="center">Cadastrar Novo Contato</h3><br/>
+                            </div>
+                            <form class="slds-form--stacked">
+                                <div class="oi">
+                                    
+                                    <lightning:input aura:id="fstname" label="Primeiro Nome" name="FirstName" value="{!v.con.FirstName}" />
+                                    <lightning:input aura:id="lstname" label="Último Nome" name="LastName" value="{!v.con.LastName}" />
+									<lightning:input type="Tel" aura:id="phone" label="Phone" name="Phone" value="{!v.con.Phone}"/>                                    
+                                    <lightning:input type="email" aura:id="email" label="Email" name="contactemail" value="{!v.con.Email}" />
+                                    
+                                    <lightning:button label="Inserir" 
+                                              class="slds-m-top--small"
+                                              variant="brand"
+                                              onclick="{!c.clickCreateContact}"/>
+                                </div>
+                            </form>
+                        </table>
+                        <!-- / FORMULÁRIO CONTATO-->
+                        
+                        <!-- LISTA DE CONTATO -->
+                        <h5 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" align="center">Lista de Contatos da Conta - {!v.singleRec.Name}</h5>
+                        <table class="tabelaEditavel">
+                            <div class="slds-p-around--large">
+                                <!--https://www.lightningdesignsystem.com/components/data-tables/-->
+                                <table class="slds-table slds-table_bordered slds-table_cell-buffe">
+                                    <thead>
+                                        <tr class="slds-text-title_caps">
+                                            <th scope="col">
+                                                <div class="slds-truncate" title="Name">Nome</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div class="slds-truncate" title="Phone">Telefone</div>
+                                            </th>
+                                            <th scope="col">
+                                                <div class="slds-truncate" title="Email">Email</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <!--table body start,Iterate contact list as a <tr> -->
+                                    <tbody>
+                                        <aura:iteration items="{!v.contactList}" var="con">                                            
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="slds-truncate" >
+                                                        <ui:outputText value="{!con.Name}" />
+                                                    </div>
+                                                </th>
+                                                <th scope="row">
+                                                    <div class="slds-truncate" >
+                                                        <ui:outputText value="{!con.Phone}"/>
+                                                    </div>
+                                                </th>
+                                                <th scope="row">
+                                                    <div class="slds-truncate">
+                                                        <ui:outputText value="{!con.Email}" />
+                                                    </div>
+                                                </th>
+                                                <!-- criado o data-index para pegar o id do contato.-->
+						<button data-index="{!con.Id}" class="slds-button slds-button_destructive" onclick="{!c.deleteContacted}" value="{!con.Name}">Deletar</button> 
+                                            </tr>                                            
+                                        </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </table>    
+                        <!-- / LISTA DE CONTATO -->
+                        </b>
+                    </p>
+                </div>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="neutral" 
+                                      label="Ok"
+                                      title="Cancel"
+                                      onclick="{!c.closeModel}"/>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->
+        
+    </aura:if>
+</aura:component>
